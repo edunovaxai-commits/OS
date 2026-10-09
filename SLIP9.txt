@@ -1,0 +1,53 @@
+Q.1)
+
+#include <stdio.h> int main() {
+int ref[] = {8, 5, 7, 8, 5, 7, 2, 3, 7, 3, 5, 9, 4, 6, 2};
+int n=15, f, i,j,k,found,fault=0,pos,far,next; printf("Enter number of frames: "); scanf("%d",&f);
+int frame[f]; for(i=0;i<f;i++) frame[i]=-1; for(i=0;i<n;i++) {
+found=0;
+for(j=0;j<f;j++) if(frame[j]==ref[i]) found=1; if(!found) {
+pos=-1;
+for(j=0;j<f;j++) if(frame[j]==-1) {pos=j;break;} if(pos==-1) {
+far=-1; for(j=0;j<f;j++) {
+next=9999; for(k=i+1;k<n;k++)
+if(ref[k]==frame[j]) {next=k;break;} if(next>far) {far=next;pos=j;}
+}
+}
+frame[pos]=ref[i]; fault++;
+}
+printf("%d : ",ref[i]);
+for(j=0;j<f;j++) printf("%d ",frame[j]); if(!found) printf(" Page Fault"); printf("\n");
+}
+printf("Total page faults = %d\n",fault); return 0;
+}
+
+
+
+
+Q.2)
+
+#include <stdio.h> int main() {
+int n,i,j,time=0,done=0;
+int at[20],bt[20],ct[20],tat[20],wt[20],used[20]={0}; float avgwt=0,avgtat=0;
+printf("Enter number of processes: "); scanf("%d",&n);
+for(i=0;i<n;i++) {
+printf("Enter AT and first CPU burst for P%d: ",i+1); scanf("%d%d",&at[i],&bt[i]);
+}
+printf("\nGantt Chart:\n"); while(done<n) {
+int pos=-1,shortest=9999; for(i=0;i<n;i++)
+if(!used[i] && at[i]<=time && bt[i]<shortest) { shortest=bt[i];
+pos=i;
+}
+if(pos==-1) { time++; continue;
+}
+printf("| P%d ",pos+1); time+=bt[pos]; ct[pos]=time; used[pos]=1;
+done++;
+}
+printf("|\n"); for(i=0;i<n;i++) {
+tat[i]=ct[i]-at[i];
+wt[i]=tat[i]-bt[i]; avgwt+=wt[i]; avgtat+=tat[i];
+}
+printf("Process\tAT\tBT\tCT\tTAT\tWT\n"); for(i=0;i<n;i++)
+printf("P%d\t%d\t%d\t%d\t%d\t%d\n",i+1,at[i],bt[i],ct[i],tat[i],wt[i]);
+printf("Average WT = %.2f\n",avgwt/n); printf("Average TAT = %.2f\n",avgtat/n); return 0;
+}

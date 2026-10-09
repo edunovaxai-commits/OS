@@ -1,0 +1,49 @@
+Q.1)
+
+#include <stdio.h> #include <stdlib.h> int main() {
+int req[] = {10, 25, 75, 90, 130, 145, 180, 55};
+int n = 8;
+int head = 80; int disk = 200; int total = 0; int i, j, t;
+int left[8], right[8]; int l=0, r=0;
+for (i=0;i<n;i++) {
+if (req[i] < head) left[l++]=req[i]; else right[r++]=req[i];
+}
+for (i=0;i<l-1;i++) for (j=i+1;j<l;j++) if(left[i]<left[j]){t=left[i];left[i]=left[j];left[j]=t;}
+for (i=0;i<r-1;i++) for (j=i+1;j<r;j++) if(right[i]>right[j]){t=right[i];right[i]=right[j];right[j]=t;}
+printf("Service order: "); if ("Left"[0]=='L') {
+for(i=0;i<l;i++){total+=abs(head-left[i]);head=left[i];printf("%d ",head);} total += abs(head-0); head=0; printf("0 ");
+for(i=0;i<r;i++){total+=abs(head-right[i]);head=right[i];printf("%d ",head);}
+} else {
+for(i=0;i<r;i++){total+=abs(head-right[i]);head=right[i];printf("%d ",head);} total += abs(head-(disk-1)); head=disk-1; printf("%d ",head); for(i=0;i<l;i++){total+=abs(head-left[i]);head=left[i];printf("%d ",head);}
+}
+printf("\nTotal head movements = %d\n",total); return 0;
+}
+
+
+
+
+
+Q.2)
+
+#include <stdio.h> int main() {
+int ref[] = {8, 5, 7, 8, 5, 7, 2, 3, 7, 3, 5, 9, 4, 6, 2};
+int n=15, f, i,j,k,found,pos,fault=0,time=0,maxfreq; printf("Enter number of frames: ");
+scanf("%d",&f);
+int frame[f],freq[f],age[f];
+for(i=0;i<f;i++) {frame[i]=-1;freq[i]=0;age[i]=0;} for(i=0;i<n;i++) {
+time++; found=0;
+for(j=0;j<f;j++)
+if(frame[j]==ref[i]) {found=1;freq[j]++;age[j]=time;} if(!found) {
+pos=-1;
+for(j=0;j<f;j++) if(frame[j]==-1) {pos=j;break;} if(pos==-1) {
+maxfreq=freq[0]; pos=0; for(j=1;j<f;j++)
+if(freq[j]>maxfreq || (freq[j]==maxfreq && age[j]<age[pos]))
+{maxfreq=freq[j];pos=j;}
+}
+frame[pos]=ref[i]; freq[pos]=1; age[pos]=time; fault++;
+}
+printf("%d : ",ref[i]);
+for(k=0;k<f;k++) printf("%d ",frame[k]); if(!found) printf(" Page Fault"); printf("\n");
+}
+printf("Total page faults = %d\n",fault); return 0;
+}

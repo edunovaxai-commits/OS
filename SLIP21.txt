@@ -1,0 +1,51 @@
+Q.1)
+
+#include <stdio.h> int main() {
+int n,i,time=0,done=0;
+int at[20],bt[20],pr[20],rem[20],ct[20],tat[20],wt[20]; float avgwt=0,avgtat=0;
+printf("Enter number of processes: "); scanf("%d",&n);
+for(i=0;i<n;i++) {
+printf("Enter AT, CPU burst and priority for P%d: ",i+1); scanf("%d%d%d",&at[i],&bt[i],&pr[i]);
+rem[i]=bt[i];
+}
+printf("\nGantt Chart:\n"); while(done<n) {
+int pos=-1,best=9999; for(i=0;i<n;i++)
+if(at[i]<=time && rem[i]>0 && pr[i]<best) { best=pr[i];
+pos=i;
+}
+if(pos==-1) { time++; continue;
+}
+printf("|P%d ",pos+1); rem[pos]--;
+time++; if(rem[pos]==0) {
+ct[pos]=time; done++;
+}
+}
+printf("|\n"); for(i=0;i<n;i++) {
+tat[i]=ct[i]-at[i];
+wt[i]=tat[i]-bt[i]; avgwt+=wt[i]; avgtat+=tat[i];
+}
+printf("Process\tAT\tBT\tPR\tCT\tTAT\tWT\n"); for(i=0;i<n;i++)
+printf("P%d\t%d\t%d\t%d\t%d\t%d\t%d\n", i+1,at[i],bt[i],pr[i],ct[i],tat[i],wt[i]);
+printf("Average WT = %.2f\n",avgwt/n); printf("Average TAT = %.2f\n",avgtat/n); return 0;
+}
+
+
+
+
+
+
+Q.2)
+
+#include <stdio.h> #include <stdlib.h> int main() {
+int ref[] = {3, 4, 5, 6, 3, 4, 7, 3, 4, 5, 6, 7, 2, 4, 6};
+int n=15, f, i,j,k,pos=0,fault=0,found; printf("Enter number of frames: "); scanf("%d",&f);
+int frame[f]; for(i=0;i<f;i++) frame[i]=-1; for(i=0;i<n;i++) {
+found=0;
+for(j=0;j<f;j++) if(frame[j]==ref[i]) found=1; if(!found) {
+frame[pos]=ref[i]; pos=(pos+1)%f; fault++;
+}
+printf("%d : ",ref[i]);
+for(k=0;k<f;k++) printf("%d ",frame[k]); if(!found) printf(" Page Fault"); printf("\n");
+}
+printf("Total page faults = %d\n",fault); return 0;
+}

@@ -1,0 +1,57 @@
+Q.1)
+
+#include <stdio.h> int main() {
+int n,i,j,time=0,done=0;
+int at[20],bt[20],ct[20],tat[20],wt[20],used[20]={0}; float avgwt=0,avgtat=0;
+printf("Enter number of processes: "); scanf("%d",&n);
+for(i=0;i<n;i++) {
+printf("Enter AT and first CPU burst for P%d: ",i+1); scanf("%d%d",&at[i],&bt[i]);
+}
+printf("\nGantt Chart:\n"); while(done<n) {
+int pos=-1,shortest=9999; for(i=0;i<n;i++)
+if(!used[i] && at[i]<=time && bt[i]<shortest) { shortest=bt[i];
+pos=i;
+}
+if(pos==-1) { time++; continue;
+}
+printf("| P%d ",pos+1); time+=bt[pos]; ct[pos]=time; used[pos]=1;
+done++;
+}
+printf("|\n"); for(i=0;i<n;i++) {
+tat[i]=ct[i]-at[i];
+wt[i]=tat[i]-bt[i]; avgwt+=wt[i]; avgtat+=tat[i];
+}
+printf("Process\tAT\tBT\tCT\tTAT\tWT\n"); for(i=0;i<n;i++)
+printf("P%d\t%d\t%d\t%d\t%d\t%d\n",i+1,at[i],bt[i],ct[i],tat[i],wt[i]); printf("Average WT = %.2f\n",avgwt/n);
+printf("Average TAT = %.2f\n",avgtat/n); return 0;
+}
+
+
+
+
+
+Q.2)
+
+#include <stdio.h> #include <stdlib.h> int main() {
+int req[] = {15, 30, 55, 90, 125, 140, 170};
+int n = 7;
+int head = 100; int total = 0; int i, j, t;
+int left[7], right[7]; int l = 0, r = 0;
+for (i = 0; i < n; i++) {
+if (req[i] < head) left[l++] = req[i];
+else if (req[i] > head) right[r++] = req[i];
+}
+for (i = 0; i < l - 1; i++)
+for (j = i + 1; j < l; j++)
+if (left[i] < left[j]) { t = left[i]; left[i] = left[j]; left[j] = t; } for (i = 0; i < r - 1; i++)
+for (j = i + 1; j < r; j++)
+if (right[i] > right[j]) { t = right[i]; right[i] = right[j]; right[j] = t; } printf("Service order: ");
+if ("Left"[0] == 'L') {
+for (i = 0; i < l; i++) { total += abs(head-left[i]); head=left[i]; printf("%d ",head); } for (i = 0; i < r; i++) { total += abs(head-right[i]); head=right[i]; printf("%d ",head); }
+} else {
+for (i = 0; i < r; i++) { total += abs(head-right[i]); head=right[i]; printf("%d ",head); } for (i = 0; i < l; i++) { total += abs(head-left[i]); head=left[i]; printf("%d ",head); }
+}
+printf("\nTotal head movements = %d\n", total);
+
+return 0;
+}

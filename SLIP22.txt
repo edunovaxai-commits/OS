@@ -1,0 +1,50 @@
+Q.1)
+
+#include <stdio.h> #include <stdlib.h> int main() {
+int req[] = {30, 10, 60, 95, 120, 150, 175};
+int n = 7;
+int head = 50;
+int done[7] = {0}; int total = 0;
+int i, j, index, distance, best; printf("Service order: ");
+for (i = 0; i < n; i++) { best = 99999;
+index = -1;
+for (j = 0; j < n; j++) { if (!done[j]) {
+distance = abs(head - req[j]); if (distance < best) {
+best = distance; index = j;
+}
+}
+}
+done[index] = 1;
+total += abs(head - req[index]); head = req[index];
+printf("%d ", head);
+}
+printf("\nTotal head movements = %d\n", total); return 0;
+}
+
+
+
+
+
+
+Q.2)
+
+#include <stdio.h> #include <stdlib.h> int main() {
+int ref[] = {3, 5, 7, 2, 5, 1, 2, 3, 1, 3, 5, 3, 1, 6, 2};
+int n=15, f, i,j,k,time=0,fault=0,found,pos,min; printf("Enter number of frames: "); scanf("%d",&f);
+int frame[f], counter[f];
+for(i=0;i<f;i++) { frame[i]=-1; counter[i]=0; } for(i=0;i<n;i++) {
+time++; found=0;
+for(j=0;j<f;j++)
+if(frame[j]==ref[i]) { found=1; counter[j]=time; } if(!found) {
+pos=-1;
+for(j=0;j<f;j++) if(frame[j]==-1) {pos=j;break;} if(pos==-1) {
+min=counter[0]; pos=0;
+for(j=1;j<f;j++) if(counter[j]<min) {min=counter[j];pos=j;}
+}
+frame[pos]=ref[i]; counter[pos]=time; fault++;
+}
+printf("%d : ",ref[i]);
+for(k=0;k<f;k++) printf("%d ",frame[k]); if(!found) printf(" Page Fault"); printf("\n");
+}
+printf("Total page faults = %d\n",fault); return 0;
+}
